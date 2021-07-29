@@ -1,16 +1,18 @@
 import socketio from 'socket.io'
-import { newTicket, assignedTicket, last13 } from '../ticket-list'
+import { active, addMarker, updateMarker } from '../markers'
 
 export default function socketFunction (server) {
   const io = socketio(server)
+
   io.on('connection', socket => {
-    console.log('estoy conectado')
-    socket.on('emit-ticket', (_, ticket) => {
-      ticket(newTicket())
+    socket.emit('marker-activo', active)
+    socket.on('new-marker', marker => {
+      addMarker(marker)
+      socket.broadcast.emit('new-marker', marker)
     })
-    socket.on('next-ticket', (user, ticket) => {
-      ticket(assignedTicket(user.agente, user.desktop))
-      io.emit('last-13', last13())
+    socket.on('update-marker', marker => {
+      updateMarker(marker)
+      socket.broadcast.emit('update-marker', marker)
     })
   })
 }

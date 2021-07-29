@@ -1,5 +1,5 @@
 {
-  "name": "ticket-server",
+  "name": "map-server",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
